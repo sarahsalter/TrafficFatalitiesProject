@@ -1,5 +1,5 @@
 
-# # @knirt RowBindCode
+## @knitr RowBindCode
 
 #*****************************************************
 #1. Read in Accident Level Data Sets from 2010-2015
@@ -398,10 +398,13 @@ all_merged_accidents <- rbind(subset_accident_data2015, subset_accident_data2014
 #View(all_merged_accidents)
 
 
-# # @knirt CodeExploratoryPlot
+
+## @knitr CodeExploratoryPlot
 #*****************************************************************************************************************************
 #Look at code to plot the exploratory analysis plot observing Accidents, Fatalities, & DUIs across 2015.
 #*****************************************************************************************************************************
+all_merged_accidents <- rbind(subset_accident_data2015, subset_accident_data2014, subset_accident_data2013, subset_accident_data2012, subset_accident_data2011, subset_accident_data2010)
+
 #Create the merged data ste
 #Create a unique ID number for each case; This is important because each year repeats the case numbers used in each state
 uniqueID <- seq(1:183593)
@@ -488,7 +491,7 @@ for(i in 1:nrow(accident_data2015)){
     }
   }
 }
-#total
+Total<-total 
 
 state<-1:56
 df5<-data.frame(total,state)
@@ -645,13 +648,7 @@ for(i in 1:nrow(all_merged_accidents)){
 #Counting the number of DUIs that occur on every day
 #************
 #First make the DUI variable dicotomous
-#summary(all_merged_accidents$DRUNK_DR) 
-##   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-#0.00    0.00    0.00    0.31    1.00    4.00
 all_merged_accidents$DRUNK_DR<-ifelse(all_merged_accidents$DRUNK_DR>=1,1,0)
-#summary(all_merged_accidents$DRUNK_DR)
-#Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-#0.000   0.000   0.000   0.301   1.000   1.000
 
 #Count the Number of Drunk Drivers
 #length(which(all_merged_accidents$DRUNK_DR==1)) #5592
@@ -669,18 +666,24 @@ for(i in 1:nrow(all_merged_accidents)){
 #sum(all_merged_accidents$DRUNK_DR) #55262
 
 
-# # @knitr Plot
+
+
+## @knitr Plot
 #****************************************************************************************************
 #PLOTTING ALL THREE PLOTS
 #Create plots on top of one another
-par(mfrow=c(3,1))
+par(mfrow=c(2,1),
+    mar = c(3,1.2,1,1) + 1)
+?par
+
 #************************************************
+
 #First-- number of accidents on a given day
 plot(day_number, total,
      xlab="Day Number (01/01/10-12/31/15)",
      ylab="Total Number of Accidents",
-     main="Total Number of Motor Vehicle Related Accidents (Resulting in a Fatality) on Each Day Between 2010-2015",
-     col="blue")
+     main="Total Number Fatal Traffic Accidents on Each Day in 2010-2015",
+     col="blue", pch=".")
 lines(lowess(total ~ day_number, f = 0.08), col = "black", lwd = 2)
 #Account for the summer months
 abline(v=151,col="red")
@@ -722,7 +725,7 @@ abline(v=2191,col="cyan")
 #2010 7/5-- day186
 July4_before<-c(183,183+365, 183+(365+366), 183+366+(365*2), 183+366+(365*3), 183+366+(365*4))
 July4_day<-c(185,185+365, 185+(365+366), 185+366+(365*2), 185+366+(365*3), 185+366+(365*4))
-#July4_dayafter<-c(186,186+365, 186+(365+366), 186+366+(365*2), 186+366+(365*3), 186+366+(365*4))
+July4_dayafter<-c(186,186+365, 186+(365+366), 186+366+(365*2), 186+366+(365*3), 186+366+(365*4))
 #July4_before
 #July4_day
 #July4_dayafter
@@ -744,8 +747,8 @@ abline(v=2012,col="purple")
 #2010 11/24 -- day328
 #2010 11/25 -- day329
 #2010 11/26-- day330
-#TGeve<-c(328,328+365, 328+(365+366), 328+366+(365*2), 328+366+(365*3), 328+366+(365*4))
-#TGdayafter<-c(330,330+365, 330+(365+366), 330+366+(365*2), 330+366+(365*3), 330+366+(365*4))
+TGeve<-c(328,328+365, 328+(365+366), 328+366+(365*2), 328+366+(365*3), 328+366+(365*4))
+TGdayafter<-c(330,330+365, 330+(365+366), 330+366+(365*2), 330+366+(365*3), 330+366+(365*4))
 #TGeve
 #TGdayafter
 abline(v=328,col="yellow")
@@ -766,8 +769,8 @@ abline(v=2156,col="yellow")
 #2010 12/24 -- day358
 #2010 11/25 -- day359
 #2010 11/26-- day360
-#XmanEve<-c(358,358+365, 358+(365+366), 358+366+(365*2), 358+366+(365*3), 358+366+(365*4))
-#XmasAfter<-c(360,360+365, 360+(365+366), 360+366+(365*2), 360+366+(365*3), 360+366+(365*4))
+XmasEve<-c(358,358+365, 358+(365+366), 358+366+(365*2), 358+366+(365*3), 358+366+(365*4))
+XmasAfter<-c(360,360+365, 360+(365+366), 360+366+(365*2), 360+366+(365*3), 360+366+(365*4))
 #XmanEve
 #XmasAfter
 abline(v=358,col="green")
@@ -786,9 +789,9 @@ abline(v=2186,col="green")
 #Evaluate Labor Day
 #2010 9/6 -- day249
 #2010 9/7 -- day250
-#LDBefore<-c(247,247+365, 247+(365+366), 247+366+(365*2), 247+366+(365*3), 247+366+(365*4))
-#LD<-c(249,249+365, 249+(365+366), 249+366+(365*2), 249+366+(365*3), 249+366+(365*4))
-#LDAfter<-c(250,250+365, 250+(365+366), 250+366+(365*2), 250+366+(365*3), 250+366+(365*4))
+LDBefore<-c(247,247+365, 247+(365+366), 247+366+(365*2), 247+366+(365*3), 247+366+(365*4))
+LD<-c(249,249+365, 249+(365+366), 249+366+(365*2), 249+366+(365*3), 249+366+(365*4))
+LDAfter<-c(250,250+365, 250+(365+366), 250+366+(365*2), 250+366+(365*3), 250+366+(365*4))
 #LDBefore
 #LD
 #LDAfter
@@ -804,19 +807,20 @@ abline(v=1708,col="pink")
 abline(v=1711,col="pink")
 abline(v=2073,col="pink")
 abline(v=2076,col="pink")
-data<-data.frame(NYE_day,July4_before,July4_day,LDAfter,TGeve, XmanEve)
-names<-c("NYE", "SummerInterval", "July4th", "LaborDay", "Thnksgvng", "Xmas")
+data<-data.frame(NYE_day,July4_before,July4_day,LDAfter,TGeve, XmasEve)
+names<-c("SummerInt", "July4th", "LaborDay", "ThxGvng", "Xmas","NYE")
+colnames(data)<-names
 legend('topleft', names(data), 
-       lty=1, col=c('cyan', 'red', 'purple','pink','yellow', 'green'), bty='n', cex=.75)
-
+       lty=1, col=c('red', 'purple','pink','yellow', 'green','cyan'), bty='n', cex=.4)
+?legend
 
 #************************************************
 #Second-- number of fatalities on a given day
 plot(day_number, count,
      xlab="Day Number (01/01/10-12/31/15)",
      ylab="Total Number of Fatalities",
-     main="Total Motor Vehicle Related Fatalities on Each Day Between 2010-2015",
-     col="blue")
+     main="Number Traffic Fatalities on Each Day in 2010-2015",
+     col="blue",pch=".")
 lines(lowess(count ~ day_number, f = 0.08), col = "black", lwd = 2)
 #Account for the summer months
 abline(v=151,col="red")
@@ -881,7 +885,7 @@ abline(v=2012,col="purple")
 #2010 11/25 -- day329
 #2010 11/26-- day330
 TGeve<-c(328,328+365, 328+(365+366), 328+366+(365*2), 328+366+(365*3), 328+366+(365*4))
-#TGdayafter<-c(330,330+365, 330+(365+366), 330+366+(365*2), 330+366+(365*3), 330+366+(365*4))
+TGdayafter<-c(330,330+365, 330+(365+366), 330+366+(365*2), 330+366+(365*3), 330+366+(365*4))
 #TGeve
 #TGdayafter
 abline(v=328,col="yellow")
@@ -902,8 +906,8 @@ abline(v=2156,col="yellow")
 #2010 12/24 -- day358
 #2010 11/25 -- day359
 #2010 11/26-- day360
-XmanEve<-c(358,358+365, 358+(365+366), 358+366+(365*2), 358+366+(365*3), 358+366+(365*4))
-#XmasAfter<-c(360,360+365, 360+(365+366), 360+366+(365*2), 360+366+(365*3), 360+366+(365*4))
+XmasEve<-c(358,358+365, 358+(365+366), 358+366+(365*2), 358+366+(365*3), 358+366+(365*4))
+XmasAfter<-c(360,360+365, 360+(365+366), 360+366+(365*2), 360+366+(365*3), 360+366+(365*4))
 #XmanEve
 #XmasAfter
 abline(v=358,col="green")
@@ -922,9 +926,9 @@ abline(v=2186,col="green")
 #Evaluate Labor Day
 #2010 9/6 -- day249
 #2010 9/7 -- day250
-#LDBefore<-c(247,247+365, 247+(365+366), 247+366+(365*2), 247+366+(365*3), 247+366+(365*4))
+LDBefore<-c(247,247+365, 247+(365+366), 247+366+(365*2), 247+366+(365*3), 247+366+(365*4))
 #LD<-c(249,249+365, 249+(365+366), 249+366+(365*2), 249+366+(365*3), 249+366+(365*4))
-#LDAfter<-c(250,250+365, 250+(365+366), 250+366+(365*2), 250+366+(365*3), 250+366+(365*4))
+LDAfter<-c(250,250+365, 250+(365+366), 250+366+(365*2), 250+366+(365*3), 250+366+(365*4))
 #LDBefore
 #LD
 #LDAfter
@@ -940,7 +944,10 @@ abline(v=1708,col="pink")
 abline(v=1711,col="pink")
 abline(v=2073,col="pink")
 abline(v=2076,col="pink")
-data<-data.frame(NYE_day,July4_before,July4_day,LDAfter,TGeve, XmanEve)
-names<-c("NYE", "SummerInterval", "July4th", "LaborDay", "Thnksgvng", "Xmas")
+data<-data.frame(NYE_day,July4_before,July4_day,LDAfter,TGeve, XmasEve)
+names<-c("SummerInt", "July4th", "LaborDay", "ThxGvng", "Xmas","NYE")
+colnames(data)<-names
 legend('topleft', names(data), 
-       lty=1, col=c('cyan', 'red', 'purple','pink','yellow', 'green'), bty='n', cex=.75)
+       lty=1, col=c('red', 'purple','pink','yellow', 'green','cyan'), bty='n', cex=.4)
+
+
