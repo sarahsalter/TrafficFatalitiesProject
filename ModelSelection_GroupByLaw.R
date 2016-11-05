@@ -241,7 +241,7 @@ mod_Speed1a <- glm(newcount ~ YoungPopPercent + PopGrowth + Median_UR_2015 + Veh
 summary(mod_Speed1a) 
 
 #Remove Jail Alternative 
-mod_Speed2 <- glm(newcount ~ YoungPopPercent + OldPopPercent + PopGrowth + Median_UR_2015 + VehicleMilesTrav1000 + IncomePerCapita1000 + ns(AvgTemp,2) + Snow_LowHighInd +
+mod_Speed2 <- glm(newcount ~ YoungPopPercent + OldPopPercent + PopGrowth + Median_UR_2015 + VehicleMilesTrav1000 + IncomePerCapita1000 + ns(AvgTemp,3) + Snow_LowHighInd +
                     MaxSL_Rural + MaxSL_Urban + MaxSL_AccessRd + MaxSL_OtherRd + Speed_MaxFine, family=quasipoisson, data=data)
 summary(mod_Speed2)
 
@@ -251,7 +251,7 @@ mod_Speed3 <- glm(newcount ~ YoungPopPercent + PopGrowth + Median_UR_2015 + Vehi
 summary(mod_Speed3)
 
 #Remove Access Road
-mod_Speed4 <- glm(newcount ~ YoungPopPercent + PopGrowth + Median_UR_2015 + VehicleMilesTrav1000 + IncomePerCapita1000 + ns(AvgTemp,2) + Snow_LowHighInd +
+mod_Speed4 <- glm(newcount ~ YoungPopPercent + PopGrowth + Median_UR_2015 + VehicleMilesTrav1000 + IncomePerCapita1000 + ns(AvgTemp,3) + Snow_LowHighInd +
                     MaxSL_Rural + MaxSL_Urban + MaxSL_OtherRd, family=quasipoisson, data=data)
 summary(mod_Speed4)
 
@@ -259,7 +259,7 @@ summary(mod_Speed4)
 mod_Speed4 <- glm(newcount ~ YoungPopPercent + PopGrowth + Median_UR_2015 + VehicleMilesTrav1000 + IncomePerCapita1000 + ns(AvgTemp,3) + Snow_LowHighInd +
                     MaxSL_Urban + MaxSL_OtherRd, family=quasipoisson, data=data)
 summary(mod_Speed4)
-
+#Other Roads & Urban Road are Significant
 #For every increase in speed on an urban road there is an increase in accidents----
 #Congestion?
 
@@ -297,8 +297,6 @@ mod_Helmet3 <- glm(newcount ~ YoungPopPercent + PopGrowth + Median_UR_2015 + Veh
                      BikeHelmetLaw  + MtrcycleHelmetLaw , family=quasipoisson, data=data)
 summary(mod_Helmet3)
 
-
-
 #Look at coded variables
 mod_Helmet4 <- glm(newcount ~ YoungPopPercent + PopGrowth + Median_UR_2015 + VehicleMilesTrav1000 + IncomePerCapita1000 + ns(AvgTemp,3) + Snow_LowHighInd +
                      StrictHelmetLaws + BikeHelmetAge +  MotorCycAllDrivers + MtrcycleHelmetAge, family=quasipoisson, data=data)
@@ -310,6 +308,10 @@ mod_Helmet7 <- glm(newcount ~ YoungPopPercent + PopGrowth + Median_UR_2015 + Veh
 summary(mod_Helmet7)
 #We see that Bike Age looks significant!
 
+#Remove MotorCycAllDrivers
+mod_Helmet8 <- glm(newcount ~ YoungPopPercent + PopGrowth + Median_UR_2015 + VehicleMilesTrav1000 + IncomePerCapita1000 + ns(AvgTemp,3) + Snow_LowHighInd +
+                     StrictHelmetLaws + BikeHelmetAge, family=quasipoisson, data=data)
+summary(mod_Helmet8)
 
 #*******************************************************************
 #*******************************************************************
@@ -325,7 +327,6 @@ data$OlderRegRenewPfVision<-ifelse(data$LicenseRenewCycleOlder<=4 & data$PfVisio
 mod_DUI1<- glm(newcount ~  PopGrowth + YoungPopPercent + Median_UR_2015 + VehicleMilesTrav1000 + IncomePerCapita1000 + ns(AvgTemp,3) + Snow_LowHighInd + 
                  NoTolerance + DUI_LicenseSuspFO + NoRest + DUI_IgnitionFO_Factor + DUI_Checkpoints + MarjMedicalUse, family=quasipoisson, data=data)
 summary(mod_DUI1)
-
 
 #Checkpoints Removed
 mod_DUI2<- glm(newcount ~  PopGrowth + YoungPopPercent + Median_UR_2015 + VehicleMilesTrav1000 + IncomePerCapita1000 + ns(AvgTemp,3) + Snow_LowHighInd + 
