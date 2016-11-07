@@ -1,0 +1,327 @@
+---
+author: "Sarah Salter"
+date: "October 22nd, 2016"
+output: html_document
+---
+
+<center> <h1> Fatal Laws: </h1> </center>
+<center> <h1> *Present Day Safety Laws & Their Association to Traffic Fatalities in the United States* </h1> </center>
+<style>p { color: black; font-size: 16px }
+.paragraph { font-size: 20px; }
+</style>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(knitr)
+```
+
+##I. Introduction 
+
+Yearly traffic related accidents currently contribute to the 4th leading cause of death in the United States, and the leading cause of death for persons between the ages of 1 to 44 [1]. The National Highway Traffic Safety Administration (NHTSA) estimates that highway crashes alone have an annual price tag of around $871 billion in economic loss and social harm [3].  According to the NHTSA, speeding, drunken driving, and distracted driving are the three main behavioral factors contributing to motor vehicle related fatalities across the nation.  It was found that these three behaviors alone comprise approximately 56% of the economic loss and 62% of the societal harm related to annual highway crashes, in addition to the average of 30,000+ lives lost in recent years. 
+
+Due to the fact that traffic related fatalities are preventable deaths directly related to human error, state legislators have passed numerous traffic safety regulations and launched many initiatives in an attempt to correct for this error.  Since the establishment of the US Department of Transportation in 1967 and NHTSA in 1970, many federal/state laws and ad-campaigns have been established to "save lives, prevent injuries, and reduce vehicle-related crashes", as described by their mission statement.  While there have been great reductions in the amount of annual highway crashes over the past 4 decades, the downward trend of motor vehicle related death has shown to lack uniformity amongst the states [5]. As a result, this has prompted the questions: What effect do traffic safety laws have on the number of yearly accidents resulting in death within the U.S.? In other words, can a law's non-existence or non-enforcement be indirectly fatal for persons of that residing state? 
+
+This paper examines the associations related to current state laws and traffic fatalities within the US in the year 2015. By controlling for several state-specific factors contributing to motor-vehicle accidents, I aim to explore the similarities and differences in fatality counts directly related to state traffic legislation.  Specifically, I attempt to explore whether the non-uniformity in state laws is associated to the difference in fatality reduction? And if so, what state laws appear to have the greatest contribution to this difference?  And if not, what other contributing factors are responsible for the lack consistency state-wide? I hypothesize that similar states, based on non-traffic related characteristics, with more stringent laws and greater law enforcement will have a smaller amount of motor vehicle deaths then states that do not.  
+
+##II. Data
+###A. Fatality Analysis Reporting System Data
+The Fatality Analysis Reporting System (FARS) data, created by the National Highway Traffic Safety Administration (NHTSA), can be defined as a nationwide census of fatal traffic crashes observed within the United States, as well as the District of Columbia and Puerto Rico.  According to NHTSA, for a crash to be eligible for this database the crash had to involve “at least one motor vehicle traveling on a traffic way customarily open to the public, and must have resulted in the death of a motorist or a non-motorist within 30 days of the crash” [6]. Fatalities are defined this way to account for crashes that may not have resulted in instantaneous death. Thus, it is assumed that people who are involved in a serious motor-vehicle accident and die up to 31 days after their accident die from accident related trauma/complications. Additionally, motor vehicles are defined as any motor powered vehicle, e.g.- automobile, truck, bus, motorcycle, bicycle, snowmobile, all-terrain vehicle, moped, golf cart, fork-lift, construction equipment, etc. 
+
+FARS has been operational since 1975, and contains 20+ databases consisting of information in the form of accident-level, person-level, vehicle-level, and event-level data [7].  For the purposes of my research I chose to evaluate information only pertaining to 50 states and the District of Columbia. In my exploratory analysis, I specifically evaluated accident level data between 1975-2015. For further exploratory analysis, using all data levels I chose to only evaluate the years of 2010-2015. The reason for this is because the downward trend seemed pretty consistent in the years prior. Additionally, the variables evaluated in in 2010 and later were more consistent than the variables evaluated prior to 2010.  Thus, this was the best way to evaluate the greatest amount of similar variables across time, without needing to do techniques such as imputation for missing variable data. Furthermore, in my main the analysis, I chose to only use the 2015 accident-level data which allowed me to identify the number of accidents occurring in each state and the number of fatalities resulting from those accidents.  
+
+###B. State Laws
+
+Due to the fact that my research question involves state laws pertaining to traffic safety, I used many resources to collect laws for each state that I believed were established for traffic safety purposes, and could potentially minimize person risk if obeyed. I identified the main areas of laws I was interested in as: cellphone, seatbelt, child-restraint, speeding, DUI, young driver, older driver, helmet, red-light running, and aggressive driving. I then selected which laws I wanted to represent those areas of interest, e.g.- primary enforced laws related to cell phones, primary forced laws related to seatbelts, minimum age for learner's permit holders, maximum speed limit on urban/rural roads, frequency of proof of vision checks for older adults, etc. I identified 59 laws in total. Afterwards, I researched how each law was currently being implemented (in 2015) for all 50 state, and then I coded each state-specific implementation.  One of the main sources I used to obtain this information was the Highway Loss Data Institute from the Insurance Institute for Highway Safety (IIHS) [8].  Here I obtained the information for 47 of the 59 total variables. The other 12 laws relating to speeding, DUI Blood Alcohol Content for people under 21 years of age, DUI checkpoints, legalization of marijuana, and aggressive driving were obtained from other reliable sources. (See Data Section of the Supplemental Page for more information) [9,10,11,12,13].
+
+###C. Motor Vehicle Accident Fatality Control Variables
+
+Next, I identified various motor vehicle accident risk factors that cannot be influenced directly by traffic legislation.  The purpose of identifying these variable is to determine what variables should be controlled for to ensure the best chance in evaluating traffic fatality associations related to legislation with minimum confounding variables not accounted for. 
+
+For instance, first I assumed that traffic fatalities may differ in areas where there is higher unemployment.  For example, maybe those without jobs or those frequently laid off from jobs display 'riskier' behave, e.g.- drive at faster speeds, drink and drive, do not wear their seatbelts, more often than people that are employed. As a result, I obtained the unemployment rate for each state at each month in 2015 from the National Conference of State Legislatures [14]. I then calculated each state's median annual unemployment to account for this potential confounder.  
+Secondly, I considered the possibility that areas with higher income may have an increase in traffic fatalities. According to a theory developed by Drs. Wagenaar and Streff of the Transportation Research Institute at the University of Michigan, 'drinking, gasoline, and driving are normal goods, and the demand for these goods increases as income increases'. Thus, areas of increased income are potentially subject to greater traffic fatalities [15]. To control for income level, I obtained the 2015 income per capita in each state from the U.S. Department of Commerce's Bureau of Economic Analysis. Each income value was recalculated according to 1000 dollar units (Income Per Capita/1000) for better interpretability [16].
+
+Third, I assumed that states that have a greater amount of vehicle miles traveled will have a greater risk at accident related fatalities than states that whose population drives less. From the U.S. Department of Transportation's Federal Highway Administration, I obtained each states’ total vehicle miles traveled (millions) for every month in 2015. I averaged miles traveled over all 12 months and divided this quantity by 1000 for better interpretability (units of 1000 miles traveled) [17].
+
+Lastly, I assumed that seasonality would greatly contribute to a state's amount of traffic fatalities. For instance, I assume that states that experience greater amounts of snow and rain will most likely have a greater amount of risk than states that rarely experience any type of inclement weather.  I attempted to evaluate seasonality by using a yearly average temperature variable and a low/high snow variable which identifies states that have low-high amount of snow compared to little or no yearly snow fall.  I obtained state average temperatures for 2015 from the National Climate Data Center's National Oceanic and Atmospheric Administration, as well as each states annual snow fall amount [18]. I then evaluated each state according to whether in 2015 they experienced regular snowfall verses little or no snowfall. The cut-off value I used was a conservative 10 inches, so that southern states like Florida and Texas which rarely experienced snow can be distinguished from northern states that do.
+
+###D. Population Quantities
+
+I obtained population size estimations from the Census Bureau, and population projections based on those results from the Center for Disease Control and Prevention [19,20]. Additionally, I obtained population projections for every four-year age group, from infancy to 85 years and older [20]. 
+
+Using this information, I standardized all state values by their population size, calculated population growth using the previous year's state population quantity, and calculated the population percentages for the number of 'Youth' (ages 14-24).  Population growth was calculated as a control variable since it is believed to potentially impact the number of vehicles on a given road. The population percentage of persons’ ages 14-24 years old was calculated to account for experienced drivers just getting their learners permit and drivers recently coming off of their restricted licenses with only a few years driving experience. Since young drivers contribute a large amount to total accident fatalities, especially young drivers under the influence, we hypothesize that this is an important variable to control for. 
+
+##III. Exploratory Analysis
+
+###A. Patterns in the Data
+In the plot below, we evaluated the total number of accidents and the total number of fatalities associated with those accidents, in the U.S., for each day within the years of 2010-2015. We can see obvious patterns in the data. Using apriori knowledge that seasonality may contribute to higher amounts of fatalities, we plot a summer interval for each year, consisting of the months June, July, August, and September. We can see that on average there are higher amounts of fatalities during the summer months, and much lower amounts of fatalities during the winter months. This could be associated to there being greater vehicle miles traveled during the summer compared to the winter.
+
+We can also see that there exists some yearly trends coinciding to holidays known for heightened amounts of travel and alcohol consumption. I identified these holidays as: July 4th, Labor Day, Thanksgiving, Christmas, and New Year’s. Using VP Calendar, I determined the exact days of each year that certain holidays fell on (accounting for the leap year in 2012). I then plotted each holiday interval, to capture events occurring a day prior and after the actually holiday.  We can see that there are is a distinct association with high amounts of accident fatalities occurring on or around these holiday periods. Although we have attempted to control for the effects of seasonality in our models, we were not able to account for the holiday related trends. This limitation will be discussed in the limitation section of the paper.  
+
+In another plot we looked at the amount of DUI related accidents that occur on each day during this 6-year interval. We see that some of the highest amounts of DUI related fatalities occur on the holidays evaluated.  (See Exploratory Analysis Section of the Supplementary Documentation.) 
+
+```{r echo=FALSE, include=FALSE}
+library(knitr)
+read_chunk("ExploratoryPlot.R")
+```
+
+```{r FirstCodeExploratoryPlot, echo=FALSE, include=FALSE}
+<<RowBindCode>>
+```
+
+```{r ExploratoryPlot, echo=FALSE, include=FALSE}
+<<CodeExploratoryPlot>>
+```
+
+```{r FirstPlot, echo=FALSE}
+<<Plot>>
+```
+
+##IV. Methods
+###A. Introduction
+The method used in this analysis is a Poisson regression model, specifically a Quasipoisson regression model. Each regression model was conducted using the 'stats' package of the statistical programming language, R [23]. Since the outcome of each model is defined as the total number of fatalities for each state in 2015, which is considered count data, the Poisson model is considered an acceptable model to use [24]. To properly ensure that the mean and variance of the outcome are approximately equal, we evaluate a Quasipoisson model, which (unlike the Poisson model) allows for over-dispersion/under-dispersion if it exists. Later in the model selection process, all model assumptions are re-evaluated.
+
+###B. Outcome & Control Variables
+First, although the outcome of interest is annual fatality counts per state, since each state varies in population the fatality counts need to be standardized.  Although there are many ways to potentially standardize this quantity, I chose to do so using state-level population sizes. The reason I chose population size compared to another quantity is because the entire population is at risk of being involved in a motor vehicle accident resulting in a fatality, regardless of age or whether or not they are a driver/occupant of the motor vehicle involved.  (See the Data Section of the Supplemental Documentations).
+
+Next, I looked at the individual relationships between the predictors and the outcome variable to see if there was any non-linearity that needed to be adjusted for. The seasonality predictor, average state temperature, showed to be a non-linear variable. As a result, I tested various types of splines and degrees of freedom to account for this.  I determined that a natural spline with 3 degrees of freedom had the best flexibility and ability to explain the non-linear nature of the data.
+
+Overall there are different benefits of evaluating laws individually, by group according to law category, i.e.- seatbelt laws, speeding laws, etc., or all laws of interest simultaneously. In this analysis, associations will be evaluated by grouping laws according to a law category. (See the Methods Section of the Supplemental Documentation for the benefits and assumptions of this technique, as well as the rationale of why the following method was chosen). 
+
+Also, to ensure consistency in the analysis, all predictors identified as control variables in the Data section (Motor Vehicle Accident Fatality Control Variables and Youth/Population-Growth Quantities) will be used in every single model of the regression analysis. 
+
+###C. Analysis Grouped By Law Category
+Laws were grouped into 9 unique categories: cell phones, seatbelts, child restraints, young drivers, restricted license drivers, older drivers, speeding, helmets, DUIs, and cameras. Associations of each group of laws were evaluated to the annual number of state traffic fatalities for everyone 100,000 people in its population.
+
+Current research in traffic fatalities often evaluates the association of one law at a time or all laws of interest simultaneously. It should be noted that evaluating every law of interest at once could be problematic for several reasons. First, there is a risk of using too many predictors which could lead to misleading results. Since, this dataset is fairly small, this risk becomes even greater. Second, certain laws may influence a similar 'at-risk' population. In other words, two laws may have the ability of reducing the risk of traffic fatalities in a sub-population with similar characteristics. In this case, only one of the two laws would most likely display significant results. For example, if a population with similar characteristics exist, say reckless drivers, when evaluating many laws together it is difficult to determine which laws aren't significant and which are being partially explained by other laws in the model.
+
+Since my literature review revealed that there is a lack of uniformity amongst the techniques for evaluating traffic laws, in this analysis I chose to evaluate each group of laws separately. As a result, it is strongly assumed that other laws would not influence the targeted at-risk population, and thus not affect the results.
+
+To avoid biased inference, if law variables were not significant, they were dropped from the model. The coefficients and standard errors of all variables were compared between models, as well as the amount of dispersion. If there was not an alarming difference, a chi-squared test was conducted comparing the deviance of each model. If the test revealed that models did not differ significantly, I permanently left out the dropped variable for the future regression models of the law group being analyzed.  
+
+##V. Results
+
+In this section, only the analyses that yield at least one significant law result are displayed. All law groups except child restraints, older drivers, and cameras had laws with significant results. (See results supplementary document for full regression results conducted for each of the law categories. Included are both initial models and the final models evaluated after model selection technique were performed.)
+
+Additionally, all interpretations will assume that the results are dependent on: 'observing states with similar population growth, young population percentage, median unemployment rate, vehicle miles traveled, income per capita, average temperature, and yearly snowfall indicator'.  
+
+###A. Table
+The table below represents the laws that had statistical significance from each of the models combined into one table. All values
+have been exponentiated to take the original values off of the log scale.
+
+Model Law Category | Significant Variables | Coefficient Est. | 95% Confidence Int. | 
+------------------ | --------------------- | ---------------- | --------------------|
+   Cellphone       |      Cell_AllBan      |      0.810       |   [0.634, 1.035]    |
+   Cellphone       |    Cell_YoungAllBan   |      0.764       |   [0.608, 0.959]    |
+    Seatbelt       |    SBPrimaryFactor    |      0.776       |   [0.627, 0.960]    |
+  Young Driver     |        LP_Age         |      0.833       |   [0.685, 1.012]    |
+    Speeding       |      MaxSL_Urban      |      1.011       |   [0.999, 1.023]    |
+    Speeding       |      MaxSL_Other      |      1.021       |   [1.005, 1.036]    |
+    Helmets        |     BikeHelmetAge     |      0.979       |   [0.961, 0.998]    |
+      DUI          |  DUIIgnitionFOFactor  |      0.854       |   [0.717, 1.017]    |
+      DUI          |     MarjMedicalUse    |      0.807       |   [0.660, 0.986]    |
+
+
+###B. Cellphone Law Results
++ Model:
+
+$$
+log(TotalFatalities_i*100000) = \beta_0 + \beta_1*PopGrowth_i + \beta_2*MedianUR2015_i + \beta_3*VehicleMilesTrav1000_i +  \\ \beta_4*IncomePerCapita1000_i  + \beta_5*ns(AvgTemp,3)_i + \beta_6*SnowLowHighInd_i + \beta_7*CellAllBan_i + \\
+\beta_8*CellYoungAllBan_i + \beta_9*CellYoungAllBanAgeFactor_i + \beta_{10}*CellEnforceAllUseAllDrivers_i
+$$
+
++ Significant Coefficients (Non-log Scale):
+
+    + Cell_AllBan: exp(-2.103e-01) = 0.8103411
+    + Cell_YoungAllBan: exp(-2.694e-01) = 0.7638377
+
++ Interpretations:
+
+    + Cell_AllBan:  We see that there is an association related to a 0.8103411 multiplicative change in the number of occurring traffic   
+    fatalities in 2015 (for every 100,000 people in a given state’s population) for states that have a ban against hand-held devices and        texting compared to states that do not ban both. In other words, in 2015 we see that states that do not have a ban against both (when      controlling for all other variables in the model), experience roughly 430.09 fatalities for every 100,000 people in the population.  On     the other hand, in 2015 states that ban against both texting and handheld cellphone use (when controlling for all other variables in       the model), experience roughly 348.5215 fatalities per every 100,000 people in the population.  
+    + Cell_YoungAllBan:  We see that there is a 0.7638377 multiplicative change in the number of occuring traffic fatalities in 2015 (for      every 100,000 people in a given states population) for states that have some type of cellphone ban for 'young drivers', in which           young is defined uniquely for each states but often represents (learners permit age - restricted license age). More specifically, in       2015 states that do not have some type of cellphone ban in place for young drivers (when controlling for all other variables in the        model), experience roughly 430 fatalities per every 100,000 people in the population. On the other hand, states that have a cellphone      ban for young driver’s experience roughly 329 fatalities per every 100,000 people in the population.   
+      
+      
+###C. Seatbelt Laws Results
++ Model:
+
+$$
+log(TotalFatalities_i*100000) = \beta_0 + \beta_1*PopGrowth_i + \beta_2*MedianUR2015_i + \\ \beta_3*VehicleMilesTrav1000_i + \beta_4*IncomePerCapita1000_i  + \beta_5*ns(AvgTemp,3)_i + \\ \beta_6*SnowLowHighInd_i + \beta_7*SBPrimaryFactor_i
+$$
+
++ Significant Coefficients (Non-log Scale):
+
+    + SB_Primary_Factor: exp(-2.539e-01) = 0.7757694
+    
++ Interpretations:
+
+    + SB_Primary_Factor:
+    We see that there is an association related to a 0.7757694 multiplicative change in the number of occurring traffic fatalities in 2015      (for every 100,000 people in a given states population) for states that have a primary seatbelt law, in which officers can issue a         ticket solely for a citizen not wearing their seatbelt, rather than just as a secondary offense. More specifically, in 2015 we see that     states that do not have a primary seatbelt law (when controlling for all other variables in the model), experience roughly 726             fatalities per every 100,000 people in the population. On the other hand, states that have a primary seatbelt law experience roughly       563 fatalities per every 100,000 people in the population.  
+
+
+###D. Young Driver Law Results
++ Model:
+
+$$
+log(TotalFatalities_i*100000) = \beta_0 + \beta_1*PopGrowth_i + \beta_2*MedianUR2015_i + \\ \beta_3*VehicleMilesTrav1000_i + \beta_4*IncomePerCapita1000_i  + \beta_5*ns(AvgTemp,3)_i + \\ \beta_6*SnowLowHighInd_i + \beta_7*LPAge_i + \beta_8*LPSupDriveTime_i
+$$
+
++ Significant Coefficients (Non-log Scale)
+
+    + LP_Age: exp(-1.831e-01) = 0.8326849
+
++ Interpretations
+
+    + LP_Age:
+    We see that there is an association related to a 0.8326849 multiplicative change in the number of occuring traffic fatalities in 2015      in (for every 100,000 people in a given state population) for every 1 unit (1 year) increase in a state's license permit age. More        specifically, in 2015 we see that states require young drivers to be older (when controlling for all other variables in the model),        experience roughly 0.832 times less fatalities per every 100,000 people in the population. 
+    
+###E. Speeding/Aggressive Driving Law Results
++ Model:
+
+$$
+log(TotalFatalities_i*100000) = \beta_0 + \beta_1*PopGrowth_i + \beta_2*Median_UR_2015_i + \\ \beta_3*VehicleMilesTrav1000_i + \beta_4*IncomePerCapita1000_i  + \beta_5*ns(AvgTemp,3)_i + \\ \beta_6*SnowLowHighInd_i + \beta_7*MaxSLUrban_i + \beta_8*MaxSLOtherRd_i
+$$
+
++ Significant Coefficients (Non-log Scale)
+
+    + MaxSL_Urban: exp(1.081e-02) = 1.010869
+    + MaxSL_OtherRd: exp(2.060e-02) =  1.020814
+
++ Interpretations
+
+    + MaxSL_Urban:
+    We see that there is an association related to a 1.010869 multiplicative increase in the number of occurring traffic fatalities in 2015     (for every 100,000 people in a given states population) for every 1 unit (1mph) increase in a state's maximum speed limit for urban         roadways. Although this increase is fairly small, every potential life that can be saved matters. Thus, assuming all confounders are       accounted for and that other laws do not affect the at-risk population pertaining to maximum urban road speed limits, we see that there     is an association between traffic fatality increase for urban roadways with higher maximum speed limits.
+    + MaxSL_Other: 
+    Similarly, we see that there is an association related to 1.020814 times more traffic fatalities in 2015 (for every 100,000 people in a     given states population) for every 1 unit (1mph) increase in a state's maximum speed limit for other roadways (all roads except urban,      rural, and access roads). In other words, states that have lower maximum speed limits for their 'other roads' there exists an              association of less traffic related fatalities occurring in those states. 
+            
+
+###F. Helmet Law Results
++ Model:
+
+$$
+log(TotalFatalities_i*100000) = \beta_0 + \beta_1*PopGrowth_i + \beta_2*Median_UR_2015_i + \\ \beta_3*VehicleMilesTrav1000_i + \beta_4*IncomePerCapita1000_i  + \beta_5*ns(AvgTemp,3)_i + \\ \beta_6*Snow_LowHighInd_i + \beta_7*StrictHelmetLaws_i +  \beta_8*BikeHelmetAge_i
+$$
+
++ Significant Coefficients (Non-log Scale)
+
+    + BikeHelmetAge: exp(-2.084e-02) = 0.9793757
+
++ Interpretations
+
+    + BikeHelmetAge: 
+    We see that there is an association related to 0.9793757 times less traffic fatalities in 2015 (for every 100,000 people in a given        states population) for each 1 unit (1 year) increase in a state's maximum required age that bicycle helmets must be worn.
+    In other words, states that require children to wear bicycle helmets for longer periods of time (until older ages) have an association     of less traffic related fatalities occurring in those states.  For instance, states that enforce the law that children wear bicycle          helmets until age 16 have an association of less traffic related deaths than states that only enforce children wear bicycle helmets up      until age 14.  
+
+
+###G. DUI Law Results
++ Model:
+
+$$
+log(TotalFatalities_i*100000) = \beta_0 + \beta_1*PopGrowth_i + \beta_2*Median_UR_2015_i + \beta_3*VehicleMilesTrav1000_i + \\
+    \beta_4*IncomePerCapita1000_i  + \beta_5*ns(AvgTemp,3)_i + \beta_6*Snow_LowHighInd_i + \beta_7*NoTolerance_i + \\
+    \beta_8*DUI_LicenseSuspFO_i + \beta_9*DUI_IgnitionFO_Factor_i + \beta{10}*MarjMedicalUse_i
+$$
+
++ Significant Coefficients (Non-log Scale)
+
+    + DUI_IgnitionFO_Factor: exp(-1.577e-01) = 0.854106
+    + MarjMedicalUse: exp(-2.148e-01) = 0.8067028
+
++ Interpretations
+
+    + DUI_IgnitionFO_Factor:
+    We see that there is a 0.854106 multiplicative change in the number of occurring traffic fatalities in 2015 (for every 100,000 people in     a given state’s population) for states that require an ignition interlock device after a citizen's first DUI offense, compared to states     that do not. In other words, in 2015 we see that states that do not have requires an ignition interlock device after a citizen's first      DUI offense (when controlling for all other variables in the model), experience roughly 596 fatalities per every 100,000 people in the     population. On the other hand, in 2015 states that require ignition interlocks after a first DUI offense, experience roughly 509           fatalities per every 100,000 people in the population.
+    + MarjMedicalUse: 
+    We see that there is a 0.8067028 multiplicative change in the number of occurring traffic fatalities in 2015 (for every 100,000             people in a given states population) for states that have legalized the use of medical marijuana. For instance, in 2015 we see that        states that have legalized marijuana for recreational purpose or not at all (when controlling for all other variables in the               model), experience roughly 596 fatalities for every 100,000 people in the population, compared to 481 fatalities per every 100,000         people in the population for states that have legalized marijuana for medical purposes. 
+
+##VI. Discussion
+
+Assuming that each model accounted for all confounders and that other laws (not evaluated in the models) have no influence on the results observed in each model, we see several distinct associations in state legislation pertaining to cellphones, seatbelts, young drivers, speeding, helmets and DUIs within the year of 2015.
+  
+In the model evaluating cellphone laws we found an association between traffic fatality reduction when a state observes and enforces the 'strictest' cellphone laws, banning both handheld cellphone use and texting while driving, with a 95% confidence interval of [0.634, 1.035].  Due to the fact that this confidence interval contains 1, we must consider the fact that an association may not really exist. Furthermore, in this model an association in traffic fatality reduction is also seen when a state has some type of cellphone ban in place for young drivers with a 95% confidence interval of [0.608, 0.959]. Intuitively it makes sense that states with lesser amounts of cellphone related driving would have a smaller amount of traffic fatalities since cellphones are one of the biggest causes of distracted driving and therefore one of the largest contributor to motor-vehicle related deaths.  
+
+In the speed limit model we found states that have lower maximum speed limits for their 'urban' roads there exists an association of less traffic related fatalities occurring in those states, with a 95% confidence interval [0.999, 1.023]. This could be contributed to the fact that urban roads have the potential to be very congested, thus at greater risk for potential traffic related fatalities. Also in the speed limit model we see that states that have lower maximum speed limits for their 'other roads' have an association of less traffic related fatalities, with a 95% confidence interval of [1.005, 1.036]. This could be contributed to the fact that drivers traveling at higher speeds are at greater risk for severe injuries compared to drivers that travel at lower speeds. 
+
+For the DUI model, associations were found relating traffic fatality reduction for states requiring first DUI offenders to have an ignition interlock installed in their vehicles compared to states that do not (95% Confidence Interval [0.717, 1.017]). The reduction in traffic fatalities here could be related to the fact that ignition interlocks are excellent in discouraging repeat offenders, for at least the duration of their interlock period. Ignition interlocks are also helpful for raising awareness in regards to what an individual's legal limit actual is.  Additionally, in the model evaluating DUI laws, we see that there is an association between traffic fatality reduction for states that have legalized medical marijuana compared to states that have not (95% Confidence Interval [0.660, 0.986]).
+
+Lastly associations in traffic fatality reductions can be seen in states that have a primary seatbelt law compared to states that do not (95% Confidence Interval [0.717, 1.017]), and also in states that require young drivers to obtain their learner's permit at 'older ages' compared to younger ages (95% Confidence Intervals [0.660, 0.986]).  
+
+Due to that fact that motor vehicle related fatalities are 'preventable' deaths, it is a dire public health concern that various strategies at the individual, community, state, and federal level be executed to reduce these fatalities. Although the associations evaluated in these models are only for the year 2015, more research must be done across time and with laws of other categories to verify if these associations do exist. Once it is determined which associations are valid, these results must be passed on to policy makers so that resources can be allocated in optimal ways (for each state) to strive towards lowering the yearly traffic related death toll within the United States.  
+
+##VII. Limitations
+###A. Data
+
+The data used in this research is very limited. While I attempted to control for as many confounders as possible, I most definitely missed some. In addition, the assumptions made throughout the analysis may not have been perfectly accounted for which, as a result, may have impacted the results.
+
+A major limitation of this analysis is the fact that only the year 2015 was evaluated. The major reason that more years were not evaluated was that it proved extremely difficult in determining what the laws were for past years prior to 2015.  However, in future work it would be great to obtain this information so that this same study can be applied to several year’s worth of data instead of just one.  
+
+Lastly, 5 of the 9 confidence intervals contained the number 1 in it, suggesting the possibility that an association may not really exist. Once again, more reserach must be done to verify this results.
+
+###B. Method
+My chosen method involved only analyzing data from the most recent year. In this case, I cannot make any type of inference across years. I can only use my results to make statements about 2015. The reason is that while generally surrounding years are similar, trends do not always adhere to the same yearly patterns.  Essentially making inferences would indirectly suggest that I assume that all years behave the same in regards to traffic fatalities.  
+
+Some might disagree with my technique in evaluating several laws together by group. More literature reviews and personal exploration on the topic should be done prior to future work.  Analysis evaluating multiple law groups simultaneously should definitely be explored.  
+
+
+##VIII. Future Work
+There are several areas of future work that I would be interested in conducting to better determine what associations actually exist relating state traffic laws and traffic fatalities. As previously mentioned, I think it is vital to repeat the same work over many years, e.g.- evaluating the years 2010-2015. Also, I think it is important to consider modeling across law groups and evaluating a model that contains all 'important' laws of interest, where important is defined apriori.
+
+In future research, I would also like to include evaluate state and local ad-campaigns related to traffic fatalities such as 'Click It Or Ticket' and 'Friends Don't Let Friends Drive Drunk', and consider their impact on traffic fatalities- both individually and coupled with various state legislation.  
+Also, I would also we interested in considering the occurrence of policy changes for all the laws that I am evaluating throughout the various models.
+
+Additionally, I would be interested in conducting pseudo experiments to potentially make casual inferences. Lastly, I would also be intrigued to investigate clustering techniques to see how the results compare and differ to non-clustering techniques related to traffic fatality associations. 
+
+##IX. References & Statistical Packages
+
+[1] Center for Disease Control and Prevention. National Center for Health Statistics. Leading Cause of Death. http://www.cdc.gov/nchs/fastats/leading-causes-of-death.htm (2016, October)
+
+[2] Center for Disease Control and Prevention. National Center for Health Statistics. Key Injury and Violence Data. http://www.cdc.gov/injury/wisqars/overview/key_data.html (2016, September)
+
+[3] Blincoe, L. J., Miller, T. R., Zaloshnja, E., & Lawrence, B. A. The Economic and Societal Impact Of Motor Vehicle Crashes, 2010 Washington, DC: National Highway Traffic Safety Administration. (2015, May) 
+
+[4] National Highway Traffic Safety Administration. Who We Are and What We Do.
+http://www.nhtsa.gov/About-NHTSA/Who-We-Are-and-What-We-Do (2016, January)
+
+[5] Cronin., Shea. The Effectiveness of Traffic Safety Laws in Reducing Fatal Traffic Accidents: A Reevaluation of State Panal Data. (p.34) American University. Department of Justice, Law, and Society.  
+
+[6] National Highway Traffic Safety Administration. Fatality Analysis Reporting System (FARS). Analytical User’s Manual 1975-2015.
+
+[7] National Highway Traffic Safety Administration. Fatality Analysis Reporting System (FARS). How to Access FARS Data. www.nhtsa.gov/Data/Fatality-Analysis-Reporting-System-(FARS).
+
+[8] Insurance Institute for Highway Safety. Highway Loss Data Institute. State Laws.
+www.iihs.org/iihs/topics/laws/statelaws?stateabbr=AL.
+
+[9] U.S. Department of Transportation. National Highway Traffic Safety Administration.
+Summary of State Speed Laws. www.nhsta.gov/staticfiles/nti/pdf/811457.pdf.
+
+[10] The Department of Motor Vehicle. DUI State Laws www.dmv.org/automotive-law/dui.php.
+
+[11] Governors Highway Safety Association. Sobriety Checkpoint Laws.
+www.ghsa.org/html/stateinfo/laws/checkpoint_laws.html. (November, 2016).
+
+[12] Governing the State and Localities. State Marijuana Laws Map. www.governing.com/gov-data/state-marijuana-laws-map-medical-recreational.html. (May, 2016)
+
+[13] Governors Highway Safety Association. Aggressive Driving Laws.
+www.ghsa.org.html/statainfo/laws/aggressivedriving_laws.html. (November, 2016)
+
+[14] National Conference of State Legislatures. State Unemployment Rates 2015. www.ncsl.org/documents/employ/STATE-UI-RATES-2015.pdf. (March, 2016)
+
+[15] Wagenaaar, A.C. and F.M Streff, 1989, Macroeconomic conditions and alcohol-impaired driving, Journal of Studies on Alcohol 50, 217-255.
+
+[16] U.S. Department of Commerce. Bureau of Economic Analysis. State Annualy Income Per Capita Estimates. www.bea.gov/newsreleases/relsarchivespi.htm
+
+[17] U.S. Department of Transportation. Federal Highway Administration. Office of Highway Policy Information. Traffic Volume Trends. 
+
+[18] National Climate Data Center. National Oceanic and Atmospheric Administration. State Temperatures. https://www.ncdc.noaa.gov/temp-and-precip/state-temps/.
+
+[19] United States Census Bureau. National Population Projections. https://www.census.gov/population/projections/data/national/ (December, 2014)
+
+[20] Center for Disease Control and Prevention. 
+
+[23] R Core Team (2016). R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria. URL https://www.R-project.org/.
+
+[24] Cameron, Colin A. Trivedi,Pravin K. Regression Analysis of Count Data. (January, 2013).
+
+[25] Pierce, Donald A. Schafer, Daniel W. Residuals in Generalized Linear Models. Journal Of The American Statistical Association. Vol. 81 Issue 396, 1986. 
+
+[26] Inden, Margaret. Duquesne University. 'A Panel State Data Analysis of U.S. State Traffic Fatalities'. http://www.fsb.muohio.edu/mwdsi2009/Submissions/Inden%20Traffic%20Fatalities.pdf
+
