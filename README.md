@@ -2,11 +2,13 @@
 
 + Please download 6 FARS_Accident SAS Data Files from years 2010-2016.
 
-+ Please open the Exploratory Plot Script to run with the final RMD labeled Final_Paper
++ Please download FinalDataTFP
 
-+ Codebook associated with the most up-to-date dataset is Codebook_FinalDataTFP
++ Please download the Exploratory Plot Script to run with the final RMD 
 
++ Please download the final RMD, labeled Final_Paper
 
++ Please download the most up-to-date dataset is Codebook_FinalDataTFP
 
 
 
