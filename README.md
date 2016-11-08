@@ -2,7 +2,7 @@
 
 + Please download 6 FARS_Accident SAS Data Files from years 2010-2016.
 
-+ Please download FinalDataTFP
++ Please download FARS_Data.csv
 
 + Please download the Exploratory Plot Script to run with the final RMD 
 
