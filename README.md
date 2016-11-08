@@ -10,7 +10,7 @@
 
 + Please download the most up-to-date dataset is Codebook_FinalDataTFP.
 
-+ When running the Final RMD please Knit Html OR Knit Word.
++ When running the Final RMD please Knit Html.
 
 
 
